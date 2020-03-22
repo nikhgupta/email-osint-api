@@ -11,7 +11,7 @@ module Intelligence
 
       default_error_status 400
       rescue_from Grape::Exceptions::ValidationErrors, ->(e) { error!(e, 400) }
-      rescue_from :all, ->(e) { hide_error!(e) }
+      rescue_from :all, ->(e) { errorize!(e) }
 
       helpers do
         def fetch_data(email, *fields)
@@ -22,13 +22,16 @@ module Intelligence
         end
 
         def show_error!(err)
-          return hide_error!(err) if ENV['RACK_ENV'] == 'production'
-
           error! "#{err.class} - #{err.message}\n- #{err.backtrace.join("\n- ")}", 400
         end
 
         def hide_error!(_err)
           error! 'Encountered an error!', 500
+        end
+
+        def errorize!(err)
+          display = %w[1 true].include?(ENV['SHOW_ERRORS'])
+          display ? show_error!(err) : hide_error!(err)
         end
       end
 

@@ -78,7 +78,7 @@ Response is:
 }
 ```
 
-**NOTE: Unless RACK_ENV is `production` - any errors generated via the API are dumped with backtraces.**
+**NOTE: Set `SHOW_ERRORS` env. var. to `1` - any errors generated via the API are dumped with backtraces.**
 
 By default, the API tests/probes the email for certain data, e.g. basic data
 about the email, available gravatars, etc. (list below). You can provide your
