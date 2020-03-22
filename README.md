@@ -34,10 +34,10 @@ Response is:
   "success": false,
   "domain": "gmail.com",
   "mail_servers": [
-    "209.85.232.26",
-    "64.233.186.26",
-    "209.85.202.27",
-    "66.102.1.26",
+    "172.217.197.27",
+    "64.233.186.27",
+    "209.85.202.26",
+    "66.102.1.27",
     "172.217.218.27"
   ],
   "errors": {
@@ -47,36 +47,34 @@ Response is:
     "port_opened": true,
     "connection": true,
     "helo": "250 mx.google.com at your service",
-    "mailfrom": "250 2.1.0 OK a14si6466836qtc.229 - gsmtp",
+    "mailfrom": "250 2.1.0 OK e19si6326833qtr.375 - gsmtp",
     "rcptto": false,
     "errors": {
       "rcptto": "550-5.1.1 The email account that you tried to reach does not exist. Please try\n"
     }
   },
-  "gravatars": {
-    "exampleemail@gmail.com": {
+  "gravatars": [
+    {
+      "email": "exampleemail@gmail.com",
       "id": "67250465",
       "md5": "885b30e37fa77a30593ed35f5e314355",
       "primary_md5": "885b30e37fa77a30593ed35f5e314355",
-      "urls": [
-
-      ],
+      "urls": [],
       "username": "usernameyaya",
       "preferred_username": "usernameyaya",
       "display_name": "usernameyaya"
     },
-    "example.email@gmail.com": {
+    {
+      "email": "example.email@gmail.com",
       "id": "103613831",
       "md5": "aa1d72a7b8c144aa7c8a017288c94141",
       "primary_md5": "320ef8790d0ad5243e46194cb6d9b17d",
-      "urls": [
-
-      ],
+      "urls": [],
       "username": "mybrainruth",
       "preferred_username": "mybrainruth",
       "display_name": "mybrainruth"
     }
-  }
+  ]
 }
 ```
 
