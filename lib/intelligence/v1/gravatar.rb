@@ -3,19 +3,24 @@
 module Intelligence
   module V1
     class Gravatar
-      attr_reader :email, :data
+      attr_reader :email
 
       def initialize(email)
-        @data  = {}
         @email = email
+        @data  = { email: email }
       end
 
       def md5
         @md5 ||= Digest::MD5.hexdigest(email)
       end
 
+      def data
+        (@data.keys - [:email]).any? ? @data : {}
+      end
+
       def fetch
         info = try_gravatar
+
         return self if !info || info.empty?
         return self unless info.key?('entry')
         return self unless info['entry'].count.positive?

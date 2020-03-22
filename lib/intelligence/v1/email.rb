@@ -43,9 +43,7 @@ module Intelligence
       end
 
       def fetch_gravatars
-        info = try_gravatars
-        info = info.reject { |item| item.last.empty? }.to_h
-        add_key :gravatars, info
+        add_key :gravatars, try_gravatars.reject(&:empty?)
       end
 
       def errored?
@@ -103,7 +101,7 @@ module Intelligence
       def try_gravatars
         emails = data.values_at(*EMAIL_FIELDS).compact
         emails |= emails.map { |m| m.gsub(/\+.*?@/, '@') }
-        emails.flatten.uniq.map { |m| [m, Gravatar.new(m).fetch.data] }
+        emails.flatten.uniq.map { |m| Gravatar.new(m).fetch.data }
       end
 
       def add_email_info(*fields)
