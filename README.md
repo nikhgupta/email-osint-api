@@ -81,3 +81,20 @@ Response is:
 ```
 
 **NOTE: Unless RACK_ENV is `production` - any errors generated via the API are dumped with backtraces.**
+
+By default, the API tests/probes the email for certain data, e.g. basic data
+about the email, available gravatars, etc. (list below). You can provide your
+own set of these tests/probes as a comma-separated string with `features`
+parameter.
+
+For example, to not use SMTP for validation purposes, you can use:
+
+```
+GET /api/v1/fetch/<encoded-email>?api_key=test&features=basic,gravatars
+```
+
+Available tests/probes at the moment:
+
+- *basic*: return basic information about the email incl. corrected value, canonical value, provider, etc.
+- *smtp*: use SMTP based validation to check the deliverability of the provided email
+- *gravatars*: return associated gravatars with this email address or variations

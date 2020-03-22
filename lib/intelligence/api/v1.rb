@@ -47,22 +47,22 @@ module Intelligence
         send auth, :api_key, type: String,
                              desc: 'API Key if set via environment variable'
 
-        optional :fields, type: [String], default: [],
-                          desc: 'Which fields/checks to keep in the response?',
-                          values: {
-                            value: LIB::AVAILABLE.map(&:to_s),
-                            message: "must be in #{LIB::AVAILABLE.join(', ')}"
-                          },
-                          coerce_with: lambda { |v|
-                            (v.is_a?(Array) ? v : v.split(',')).map(&:strip)
-                          }
+        optional :features, type: [String], default: [],
+                            desc: 'Which features should I use/test?',
+                            values: {
+                              value: LIB::AVAILABLE.map(&:to_s),
+                              message: "must be in #{LIB::AVAILABLE.join(', ')}"
+                            },
+                            coerce_with: lambda { |v|
+                                           (v.is_a?(Array) ? v : v.split(',')).map(&:strip)
+                                         }
       end
       get 'fetch/:str' do
         if ENV['API_KEY'].present? && params[:api_key] != ENV['API_KEY']
           error!('Unauthorized', 401)
         end
 
-        fetch_data params[:str], *params[:fields]
+        fetch_data params[:str], *params[:features]
       end
 
       route :any, '*path' do
