@@ -43,7 +43,7 @@ module Intelligence
       end
 
       def fetch_gravatars
-        add_key :gravatars, try_gravatars.reject(&:empty?)
+        add_key :gravatars, try_gravatars # .reject(&:empty?)
       end
 
       def errored?

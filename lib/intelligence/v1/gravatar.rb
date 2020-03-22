@@ -3,7 +3,7 @@
 module Intelligence
   module V1
     class Gravatar
-      attr_reader :email
+      attr_reader :email, :data
 
       def initialize(email)
         @email = email
@@ -12,10 +12,6 @@ module Intelligence
 
       def md5
         @md5 ||= Digest::MD5.hexdigest(email)
-      end
-
-      def data
-        (@data.keys - [:email]).any? ? @data : {}
       end
 
       def fetch
