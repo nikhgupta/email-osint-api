@@ -13,8 +13,9 @@ For example:
 email = 'example.email+misspelled@gmail.cam'
 encoded = Base64.encode64(email).strip
 # => "ZXhhbXBsZS5lbWFpbCttaXNzcGVsbGVkQGdtYWlsLmNhbQ=="
-res = Faraday.get("http://localhost:9292/api/v1/fetch/#{encoded}")
-data = JSON.parse(res.body)
+url = "https://email-osint.herokuapp.com/api/v1/fetch/#{encoded}"
+# => "https://email-osint.herokuapp.com/api/v1/fetch/ZXhhbXBsZS5lbWFpbCttaXNzcGVsbGVkQGdtYWlsLmNhbQ=="
+data = JSON.parse(Faraday.get(url).body)
 puts JSON.pretty_generate(data)
 ```
 
@@ -79,3 +80,5 @@ Response is:
    }
 }
 ```
+
+**NOTE: Any errors generated via the API are dumped with backtraces. You may not want this!**
