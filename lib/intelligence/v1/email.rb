@@ -53,20 +53,18 @@ module Intelligence
       def success?
         return false if errored?
         return true unless data[:smtp_debug]
+        return false if data[:smtp_debug]['errors']
 
-        data[:smtp_debug].values_at('port_opened', 'connection', 'rcptto').all?
+        data[:smtp_debug].values_at('port_opened', 'connection', 'rcptto', 'helo', 'mailfrom').all?
       end
 
       def sanitize_data
-        return if data[:success]
-        return unless data[:errors][:smtp]
-        return if data[:errors][:smtp] != 'smtp error'
+        invalid   = data[:errors][:smtp] && data[:errors][:smtp] == 'smtp error'
+        invalid ||= data[:smtp_debug] && data[:smtp_debug][:errors] && !data[:smtp_debug][:errors].empty?
+        invalid &&= !data[:success]
+        return unless invalid
 
-        return unless data[:smtp_debug]
-        return unless data[:smtp_debug][:errors]
-        return if data[:smtp_debug][:errors].empty?
-
-        data[:errors]['smtp'] = data[:smtp_debug][:errors].values.first.to_s.strip
+        data[:errors][:smtp] = data[:smtp_debug][:errors].values.first.to_s.strip
       end
 
       protected
