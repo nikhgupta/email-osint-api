@@ -10,8 +10,8 @@ module Intelligence
       prefix :api
 
       default_error_status 400
-      rescue_from Grape::Exceptions::ValidationErrors, ->(e) { show_error!(e) }
-      rescue_from :all, ->(e) { show_error!(e) }
+      rescue_from Grape::Exceptions::ValidationErrors, ->(e) { error!(e, 400) }
+      rescue_from :all, ->(e) { hide_error!(e) }
 
       helpers do
         def fetch_data(email, *fields)
@@ -22,7 +22,13 @@ module Intelligence
         end
 
         def show_error!(err)
+          return hide_error!(err) if ENV['RACK_ENV'] == 'production'
+
           error! "#{err.class} - #{err.message}\n- #{err.backtrace.join("\n- ")}", 400
+        end
+
+        def hide_error!(_err)
+          error! 'Encountered an error!', 500
         end
       end
 
@@ -37,7 +43,10 @@ module Intelligence
         failure [[401, 'Unauthorized', 'Intelligence::API::Error']]
       end
       params do
-        # requires :str, type: String, desc: 'Base64 encoded email value.'
+        auth = ENV['API_KEY'].present? ? :requires : :optional
+        send auth, :api_key, type: String,
+                             desc: 'API Key if set via environment variable'
+
         optional :fields, type: [String], default: [],
                           desc: 'Which fields/checks to keep in the response?',
                           values: {
@@ -49,6 +58,10 @@ module Intelligence
                           }
       end
       get 'fetch/:str' do
+        if ENV['API_KEY'].present? && params[:api_key] != ENV['API_KEY']
+          error!('Unauthorized', 401)
+        end
+
         fetch_data params[:str], *params[:fields]
       end
 

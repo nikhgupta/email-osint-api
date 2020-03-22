@@ -1,20 +1,20 @@
 # email-osint
 Grape API for OSINT email - basic data, smtp validation and gravatars information
 
-Request email data for an email in the following format:
+API Key can be set via environment variable `API_KEY`. You can request data for an email in the following format:
 
 ```bash
-GET /api/v1/fetch/<base64-encoded-email>
+GET /api/v1/fetch/{base64-encoded-email}?api_key={api-key}
 ```
 
-For example:
+**[EXAMPLE API CALL](https://email-osint-demo.herokuapp.com/api/v1/fetch/RVhBTXBsZS5lTWFpbCttaXNTcGVsbEBnTWFpbC5jYW0?api_key=test)**
 
 ```ruby
 email = 'EXAMple.eMail+misSpell@gMail.cam'
-encoded = Base64.encode64(email).strip
-# => "RVhBTXBsZS5lTWFpbCttaXNTcGVsbEBnTWFpbC5jYW0="
-url = "https://email-osint.herokuapp.com/api/v1/fetch/#{encoded}"
-# => "https://email-osint.herokuapp.com/api/v1/fetch/RVhBTXBsZS5lTWFpbCttaXNTcGVsbEBnTWFpbC5jYW0="
+encoded = Base64.encode64(email).strip.gsub(/=+\z/, '')
+# => "RVhBTXBsZS5lTWFpbCttaXNTcGVsbEBnTWFpbC5jYW0"
+url = "https://email-osint-demo.herokuapp.com/api/v1/fetch/#{encoded}?api_key=test"
+# => "https://email-osint-demo.herokuapp.com/api/v1/fetch/RVhBTXBsZS5lTWFpbCttaXNTcGVsbEBnTWFpbC5jYW0?api_key=test"
 data = JSON.parse(Faraday.get(url).body)
 puts JSON.pretty_generate(data)
 ```
@@ -80,4 +80,4 @@ Response is:
 }
 ```
 
-**NOTE: Any errors generated via the API are dumped with backtraces. You may not want this!**
+**NOTE: Unless RACK_ENV is `production` - any errors generated via the API are dumped with backtraces.**
