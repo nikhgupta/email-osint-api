@@ -60,11 +60,15 @@ module Intelligence
 
       def sanitize_data
         invalid   = data[:errors][:smtp] && data[:errors][:smtp] == 'smtp error'
-        invalid ||= data[:smtp_debug] && data[:smtp_debug][:errors] && !data[:smtp_debug][:errors].empty?
+        invalid ||= data[:smtp_debug] && data[:smtp_debug][:errors]
         invalid &&= !data[:success]
         return unless invalid
 
         data[:errors][:smtp] = data[:smtp_debug][:errors].values.first.to_s.strip
+        return unless data[:errors][:smtp].empty?
+
+        values = data[:smtp_debug].slice(:port_opened, :connection, :rcptto, :helo, :mailfrom)
+        data[:errors][:smtp] = values.reject { |_k, v| v.nil? }.reject { |_k, v| v }.map { |k, _v| "#{k}=false" }.join(' ')
       end
 
       protected
