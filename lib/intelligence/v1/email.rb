@@ -54,7 +54,7 @@ module Intelligence
         return false if errored?
         return true unless data[:smtp_debug]
 
-        all? data[:smtp_debug].values_at('port_opened', 'connection', 'rcptto')
+        data[:smtp_debug].values_at('port_opened', 'connection', 'rcptto').all?
       end
 
       def sanitize_data
