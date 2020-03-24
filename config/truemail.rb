@@ -4,7 +4,7 @@ require 'truemail'
 
 Truemail.configure do |config|
   # Required parameter. Must be an existing email on behalf of which verification will be performed
-  config.verifier_email = 'mestoic@gmail.com'
+  config.verifier_email = 'support@gmail.com'
 
   # Optional parameter. Must be an existing domain on behalf of which verification will be performed.
   # By default verifier domain based on verifier email
