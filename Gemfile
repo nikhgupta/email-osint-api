@@ -13,3 +13,5 @@ gem 'email_address'
 gem 'email_inquire'
 gem 'ruby-mailchecker'
 gem 'truemail'
+
+gem 'proxifier'

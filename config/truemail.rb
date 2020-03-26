@@ -2,6 +2,11 @@
 
 require 'truemail'
 
+# if we have proxies enabled, allow 5 times the timeout
+path = File.join(File.dirname(File.dirname(__FILE__)), "proxy.json")
+proxies = JSON.parse(File.read(path)).count
+multiplier = proxies.positive? ? 5 : 1
+
 Truemail.configure do |config|
   # Required parameter. Must be an existing email on behalf of which verification will be performed
   config.verifier_email = 'support@gmail.com'
@@ -17,15 +22,15 @@ Truemail.configure do |config|
   # config.smtp_error_body_pattern = /regex_pattern/
 
   # Optional parameter. Connection timeout is equal to 2 ms by default.
-  # config.connection_timeout = 1
+  config.connection_timeout = 2 * multiplier
 
   # Optional parameter. A SMTP server response timeout is equal to 2 ms by default.
-  # config.response_timeout = 1
+  config.response_timeout = 2 * multiplier
 
   # Optional parameter. Total of connection attempts. It is equal to 2 by default.
   # This parameter uses in mx lookup timeout error and smtp request (for cases when
   # there is one mx server).
-  # config.connection_attempts = 3
+  config.connection_attempts = proxies
 
   # Optional parameter. You can predefine default validation type for
   # Truemail.validate('email@email.com') call without with-parameter

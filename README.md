@@ -96,3 +96,16 @@ Available tests/probes at the moment:
 - *basic*: return basic information about the email incl. corrected value, canonical value, provider, etc.
 - *smtp*: use SMTP based validation to check the deliverability of the provided email
 - *gravatars*: return associated gravatars with this email address or variations
+
+
+### PROXIES
+
+To use proxies for smtp verification, set `USE_PROXIES` to `1`, and add your proxies in the 
+`proxy.json` file in the following format:
+
+```json
+    [
+        { "host": "127.0.0.1", "port": 1080 },
+        { "host": "127.0.0.1", "port": 1081 },
+    ]
+```
