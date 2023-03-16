@@ -61,7 +61,7 @@ GEM
     pry (0.13.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    rack (2.2.2)
+    rack (3.0.7)
     rack-accept (0.4.5)
       rack (>= 0.4)
     ruby-mailchecker (3.3.4)
